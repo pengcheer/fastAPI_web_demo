@@ -5,8 +5,10 @@ from loguru import logger
 
 from src.core.config import settings
 from src.core.model import Base
+from src.dishes.model import Dish  # 确保模型已导入以创建表
 
 # 创建异步引擎
+# print(f"数据库连接字符串: {settings.database_url}")
 engine = create_async_engine(settings.database_url, **settings.engine_options)
 
 # 创建异步会话工厂
@@ -37,5 +39,6 @@ async def creat_db_and_tables():
     """初始化数据库，创建所有表"""
     async with engine.begin() as conn:
         await conn.run_sync(Base.metadata.create_all)
+        await conn.run_sync(Dish.metadata.create_all)  # 确保Dish表被创建
 
     logger.info("数据库初始化完成，所有表已创建。")

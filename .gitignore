@@ -10,10 +10,10 @@ wheels/
 
 
 # virtual environments
-.venv/
+.venv/ 
 
 # environment variables
-.env/
+.env
 
 # data files
 data/

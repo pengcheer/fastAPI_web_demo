@@ -34,7 +34,7 @@ class Settings(BaseSettings):
     echo: bool = False          # 是否打印 SQL，开发可打开，生产关闭
 
     # SQLite 配置
-    sqlite_db_path: str = "./data/fastapi.sqlite3"
+    sqlite_db_path: str = "./data/hh_demo.sqlite3"
     
     # Redis 配置
     redis_host: str = "localhost"
@@ -51,7 +51,13 @@ class Settings(BaseSettings):
                 f"@{self.db_host}:{self.db_port}/{self.db_name}"
             )
         elif self.db_type == "sqlite":
+            # 这里使用的是相对路径
+            # 检测数据库文件是否存在，若不存在，在对应目录创建数据库文件
+            import os
+            os.makedirs(os.path.dirname(self.sqlite_db_path), exist_ok=True)
+            
             return f"sqlite+aiosqlite:///{self.sqlite_db_path}"
+        
         else:
             raise ValueError(f"Unsupported DB_TYPE: {self.db_type}")
 
