@@ -8,9 +8,10 @@ from src.dishes.repository import DishRepository
 from src.dishes.service import DishService
 from src.dishes.schema import DishCreate, DishUpdate, DishResponse
 from src.core.database import get_db
+from src.auth.user_manager import current_active_user, current_superuser
 
 
-router = APIRouter(prefix="/dishes", tags=["dishes"])
+router = APIRouter(prefix="/dishes", tags=["dishes"],dependencies=[Depends(current_active_user)])
 
 
 # 注入仓库和服务层
